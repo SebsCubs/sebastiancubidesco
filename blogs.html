@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap">
+</head>
+<body>
+
+
+    <main id="main-content">
+        <section id="blog">
+            <h1 data-key="blog-title">Blog</h1>
+            <ul id="blog-list"></ul>
+        </section>
+    </main>
+
+    <script src="commonScripts.js"></script>
+    <script src="script.js"></script>
+    <script src="contentIndex.js"></script>
+    <script>
+        function loadBlogPosts() {
+            const blogList = document.getElementById('blog-list');
+            blogPosts.forEach(post => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = post.title;
+                a.onclick = () => loadMarkdown(post.url);
+                li.appendChild(a);
+                blogList.appendChild(li);
+            });
+        }
+
+        window.onload = function() {
+            loadCommonScripts();
+            loadBlogPosts();
+        };
+    </script>
+</body>
+</html>

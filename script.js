@@ -2,35 +2,6 @@
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 const themeLabel = document.getElementById('theme-label');
-
-// Check for saved theme in localStorage
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-    themeToggle.checked = true;
-    themeLabel.textContent = 'Light Mode';
-} else {
-    themeLabel.textContent = 'Dark Mode';
-}
-
-themeToggle.addEventListener('change', () => {
-    body.classList.toggle('dark-mode');
-    if (themeToggle.checked) {
-        localStorage.setItem('theme', 'dark');
-        themeLabel.textContent = 'Light Mode';
-    } else {
-        localStorage.setItem('theme', 'light');
-        themeLabel.textContent = 'Dark Mode';
-    }
-});
-
-
-
-// Language Switcher
-const languageToggle = document.getElementById('language-toggle');
-const languageLabel = document.getElementById('language-label');
-const elementsToTranslate = document.querySelectorAll('[data-key]');
-
-// Translation data
 const translations = {
     en: {
         'projects': 'Projects',
@@ -65,37 +36,14 @@ const translations = {
         'blog': 'Blog'
     }
 };
-
 // Set default language
 let currentLang = 'en';
 
-// Check for saved language in localStorage
-if (localStorage.getItem('lang')) {
-    currentLang = localStorage.getItem('lang');
+function initializeApp() {
+    initializeThemeToggle();
+    initializeLanguageToggle();
     translatePage(currentLang);
-    if (currentLang === 'es') {
-        languageToggle.checked = true;
-        languageLabel.textContent = translations[currentLang]['light-mode'];
-    } else {
-        languageLabel.textContent = translations[currentLang]['dark-mode'];
-    }
-} else {
-    languageLabel.textContent = translations[currentLang]['light-mode'];
 }
-
-// Update language when toggle changes
-languageToggle.addEventListener('change', () => {
-    let selectedLang = 'en';
-    if (languageToggle.checked) {
-        selectedLang = 'es';
-        languageLabel.textContent = translations[selectedLang]['dark-mode'];
-    } else {
-        selectedLang = 'en';
-        languageLabel.textContent = translations[selectedLang]['light-mode'];
-    }
-    translatePage(selectedLang);
-    localStorage.setItem('lang', selectedLang);
-});
 
 // Function to translate page content
 function translatePage(lang) {
@@ -152,27 +100,104 @@ function loadMarkdown(url) {
         .catch(error => console.error('Error loading markdown:', error));
 }
 
-
 function loadHeader() {
-    const headerHTML = `
-        <header>
-            <!-- Your header content -->
-        </header>
+    const header = document.createElement('header');
+    header.innerHTML = `
+        <div class="centered-content">
+            <div class="header-content">
+                <nav>
+                    <ul>
+                        <li><a href="index.html" data-translate="home">Home</a></li>
+                        <li><a href="projects.html" data-translate="projects">Projects</a></li>
+                        <li><a href="blogs.html" data-translate="blog">Blog</a></li>
+                    </ul>
+                </nav>
+                <div id="switchers">
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="theme-label">Dark Mode</span>
+                    </div>
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="language-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="language-label">Español</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
-    document.body.insertAdjacentHTML('afterbegin', headerHTML);
-    loadCommonScripts();
+    document.body.prepend(header);
+
+    // Add inline styles to create space between toggles
+    const toggleContainers = document.querySelectorAll('.toggle-container');
+    toggleContainers.forEach((container, index) => {
+        if (index === 0) {
+            container.style.marginRight = '20px'; // Adjust this value as needed
+        }
+    });
+
+    // Initialize the app after the header has been added to the DOM
+    initializeApp();
 }
 
-function loadFooter() {
-    const footerHTML = `
-        <footer>
-            <!-- Your footer content -->
-        </footer>
-    `;
-    document.body.insertAdjacentHTML('beforeend', footerHTML);
+
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const themeLabel = document.getElementById('theme-label');
+
+    // Check for saved theme in localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggle.checked = true;
+        themeLabel.textContent = 'Light Mode';
+    } else {
+        themeLabel.textContent = 'Dark Mode';
+    }
+
+    themeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode');
+        if (themeToggle.checked) {
+            localStorage.setItem('theme', 'dark');
+            themeLabel.textContent = 'Light Mode';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeLabel.textContent = 'Dark Mode';
+        }
+    });
 }
 
-window.onload = function() {
-    loadHeader();
-    loadFooter();
-};
+function initializeLanguageToggle() {
+    const languageToggle = document.getElementById('language-toggle');
+    const languageLabel = document.getElementById('language-label');
+
+    // Check for saved language in localStorage
+    if (localStorage.getItem('lang')) {
+        currentLang = localStorage.getItem('lang');
+        if (currentLang === 'es') {
+            languageToggle.checked = true;
+            languageLabel.textContent = translations[currentLang]['language-label'];
+        } else {
+            languageLabel.textContent = translations[currentLang]['language-label'];
+        }
+    } else {
+        languageLabel.textContent = translations[currentLang]['language-label'];
+    }
+
+    languageToggle.addEventListener('change', () => {
+        currentLang = languageToggle.checked ? 'es' : 'en';
+        languageLabel.textContent = translations[currentLang]['language-label'];
+        translatePage(currentLang);
+        localStorage.setItem('lang', currentLang);
+    });
+}
+
+// Call loadHeader when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', loadHeader);
+
+

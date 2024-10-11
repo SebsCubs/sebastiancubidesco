@@ -7,31 +7,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../blog/blogs.html">Blog</a></li>
-            </ul>
-        </nav>
-        <div id="switchers">
-            <div id="language-switcher">
-                <label class="switch">
-                    <input type="checkbox" id="language-toggle">
-                    <span class="slider round"></span>
-                </label>
-                <span id="language-label">English</span>
-            </div>
-            <div id="theme-switcher">
-                <label class="switch">
-                    <input type="checkbox" id="theme-toggle">
-                    <span class="slider round"></span>
-                </label>
-                <span id="theme-label">Light Mode</span>
-            </div>
-        </div>
-    </header>
-
     <main id="main-content">
         <section id="projects">
             <h1 data-key="projects-title">Projects</h1>
@@ -57,8 +32,7 @@
         }
 
         window.onload = function() {
-            loadHeader();
-            loadFooter();
+            loadCommonScripts();
             loadProjects();
         };
     </script>
