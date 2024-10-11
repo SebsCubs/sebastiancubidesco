@@ -78,11 +78,19 @@ function loadContent(url) {
 }
 
 function loadMarkdown(url) {
-    // Ensure the URL starts with a forward slash
-    const absoluteUrl = url.startsWith('/') ? url : `/${url}`;
+    // Get the base path from the current URL
+    const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
+    
+    // Ensure the URL starts with a forward slash and prepend the base path
+    const absoluteUrl = `${basePath}${url.startsWith('/') ? url : `/${url}`}`;
     
     fetch(absoluteUrl)
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
         .then(text => {
             // Parse the markdown
             const content = marked.parse(text);
@@ -97,7 +105,10 @@ function loadMarkdown(url) {
                 });
             }
         })
-        .catch(error => console.error('Error loading markdown:', error));
+        .catch(error => {
+            console.error('Error loading markdown:', error);
+            document.getElementById('main-content').innerHTML = `<div class="centered-content"><p>Error loading content: ${error.message}</p></div>`;
+        });
 }
 
 function loadHeader() {
