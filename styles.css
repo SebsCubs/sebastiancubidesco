@@ -1,0 +1,162 @@
+/* Root variables for light theme */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --link-color: #0066cc;
+    --link-visited-color: #551A8B;
+    --font-family: 'Fira Code', monospace;
+}
+
+/* Dark theme overrides */
+body.dark-mode {
+    --background-color: #1e1e1e;
+    --text-color: #d4d4d4;
+    --link-color: #6DB2FF;
+    --link-visited-color: #BB86FC;
+}
+
+/* Apply the variables */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+}
+/* Hyperlink styles */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--link-visited-color);
+}
+/* Navigation styles */
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--text-color);
+}
+
+/* Switchers styles */
+#switchers {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#language-switcher, #theme-switcher {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+#language-label, #theme-label {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+/* Toggle Switch Style */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--text-color);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--background-color);
+    transition: .4s;
+}
+
+/* On checked */
+input:checked + .slider {
+    background-color: var(--text-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+    }
+    #switchers {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* On checked */
+input:checked + .slider {
+    background-color: var(--link-color);
+}
+.centered-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
