@@ -37,14 +37,32 @@ const translations = {
         'blog': 'Blog',
         'projects-title': 'Projects',
         'blog-title': 'Blog',
-        // Add more key-value pairs as needed
+        'home': 'Home',
+        'dark-mode': 'Dark Mode',
+        'light-mode': 'Light Mode',
+        'theme-label': 'Dark Mode',
+        'language-label': 'Español',
+        'about': 'About',
+        'contact': 'Contact',
+        'home': 'Home',
+        'projects': 'Projects',
+        'blog': 'Blog'
     },
     es: {
         'projects': 'Proyectos',
         'blog': 'Blog',
         'projects-title': 'Proyectos',
         'blog-title': 'Blog',
-        // Add more key-value pairs as needed
+        'home': 'Inicio',
+        'dark-mode': 'Modo Oscuro',
+        'light-mode': 'Modo Claro',
+        'theme-label': 'Modo Claro',
+        'language-label': 'English',
+        'about': 'Acerca',
+        'contact': 'Contacto',
+        'home': 'Inicio',
+        'projects': 'Proyectos',
+        'blog': 'Blog'
     }
 };
 
@@ -57,12 +75,12 @@ if (localStorage.getItem('lang')) {
     translatePage(currentLang);
     if (currentLang === 'es') {
         languageToggle.checked = true;
-        languageLabel.textContent = 'English';
+        languageLabel.textContent = translations[currentLang]['light-mode'];
     } else {
-        languageLabel.textContent = 'Español';
+        languageLabel.textContent = translations[currentLang]['dark-mode'];
     }
 } else {
-    languageLabel.textContent = 'Español';
+    languageLabel.textContent = translations[currentLang]['light-mode'];
 }
 
 // Update language when toggle changes
@@ -70,10 +88,10 @@ languageToggle.addEventListener('change', () => {
     let selectedLang = 'en';
     if (languageToggle.checked) {
         selectedLang = 'es';
-        languageLabel.textContent = 'English';
+        languageLabel.textContent = translations[selectedLang]['dark-mode'];
     } else {
         selectedLang = 'en';
-        languageLabel.textContent = 'Español';
+        languageLabel.textContent = translations[selectedLang]['light-mode'];
     }
     translatePage(selectedLang);
     localStorage.setItem('lang', selectedLang);
@@ -81,9 +99,20 @@ languageToggle.addEventListener('change', () => {
 
 // Function to translate page content
 function translatePage(lang) {
-    elementsToTranslate.forEach(element => {
-        const key = element.getAttribute('data-key');
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
         element.textContent = translations[lang][key];
+    });
+
+    // Translate header elements
+    document.getElementById('theme-label').textContent = translations[lang]['theme-label'];
+    document.getElementById('language-label').textContent = translations[lang]['language-label'];
+    
+    document.querySelectorAll('nav a').forEach(link => {
+        const key = link.getAttribute('href').substring(1); // Remove the '#' from the href
+        if (translations[lang][key]) {
+            link.textContent = translations[lang][key];
+        }
     });
 }
 

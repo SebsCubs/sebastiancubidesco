@@ -11,31 +11,31 @@
 <body>
     <!-- Header -->
     <header>
-        <!-- Navigation -->
-        <nav>
-            <ul>
-                <li><a href="projects/projects.html">Projects</a></li>
-                <li><a href="blog/blogs.html">Blog</a></li>
-            </ul>
-        </nav>
-        <!-- Switchers -->
-        <div id="switchers">
-            <!-- Language Switcher -->
-            <div id="language-switcher">
-                <label class="switch">
-                    <input type="checkbox" id="language-toggle">
-                    <span class="slider round"></span>
-                </label>
-                <span id="language-label">English</span>
-            </div>
-
-            <!-- Theme Switcher -->
-            <div id="theme-switcher">
-                <label class="switch">
-                    <input type="checkbox" id="theme-toggle">
-                    <span class="slider round"></span>
-                </label>
-                <span id="theme-label">Light Mode</span>
+        <div class="centered-content">
+            <div class="header-content">
+                <nav>
+                    <ul>
+                        <li><a href="index.html" data-translate="home">Home</a></li>
+                        <li><a href="projects/projects.html" data-translate="projects">Projects</a></li>
+                        <li><a href="blog/blogs.html" data-translate="blog">Blog</a></li>
+                    </ul>
+                </nav>
+                <div id="switchers">
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="theme-label">Dark Mode</span>
+                    </div>
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="language-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="language-label">Español</span>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -43,6 +43,7 @@
     <!-- Main Content -->
     <main id="main-content">
         <!-- Projects Section -->
+        <div class="centered-content">
         <section id="projects">
             <h1 data-key="projects-title">Projects</h1>
             <p>
@@ -66,6 +67,7 @@
                 Welcome to my blog!
             </p>
         </section>
+        </div>
     </main>
 
     <!-- Scripts -->
