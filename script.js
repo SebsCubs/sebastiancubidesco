@@ -92,8 +92,13 @@ function loadMarkdown(url) {
             return response.text();
         })
         .then(text => {
-            // Parse the markdown
-            const content = marked.parse(text);
+            // Replace relative image URLs with absolute URLs
+            const modifiedText = text.replace(/!\[([^\]]*)\]\((?!http|https:\/\/)([^)]+)\)/g, 
+                (match, altText, imageUrl) => `![${altText}](${basePath}/${imageUrl})`
+            );
+            
+            // Parse the modified markdown
+            const content = marked.parse(modifiedText);
             
             // Insert the content into the DOM with the centered-content class
             document.getElementById('main-content').innerHTML = `<div class="centered-content">${content}</div>`;
