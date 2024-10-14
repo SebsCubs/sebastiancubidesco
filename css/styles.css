@@ -37,7 +37,7 @@ a:visited {
 nav ul {
     display: flex;
     list-style: none;
-    padding: 10px;
+    padding: 0;
     margin: 0;
 }
 
@@ -52,18 +52,33 @@ nav ul li a {
 
 /* Header styles */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--background-color);
     border-bottom: 1px solid var(--text-color);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+nav {
+    flex-grow: 1;
 }
 
 /* Switchers styles */
 #switchers {
     display: flex;
     align-items: center;
-    padding: 10px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-container:first-child {
+    margin-right: 20px;
 }
 
 #language-switcher, #theme-switcher {
@@ -116,7 +131,7 @@ header {
 
 /* On checked */
 input:checked + .slider {
-    background-color: var(--text-color);
+    background-color: var(--link-color);
 }
 
 input:checked + .slider:before {
@@ -150,10 +165,6 @@ section {
         flex-direction: column;
         align-items: flex-start;
     }
-}
-/* On checked */
-input:checked + .slider {
-    background-color: var(--link-color);
 }
 .centered-content {
     max-width: 800px;
