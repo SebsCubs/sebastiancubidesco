@@ -10,7 +10,7 @@ export const blogPosts = [
             en: 'A whitepaper on my website',
             es: 'Un whitepaper sobre mi sitio web'
         },
-        url: '/content/blogs/post1.md'
+        url: 'content/blogs/post1.md'
     },
     {
         id: 'post2',
@@ -18,7 +18,7 @@ export const blogPosts = [
             en: 'My Second Post',
             es: 'Mi segunda publicación'
         },
-        url: '/content/blogs/post2.md'
+        url: 'content/blogs/post2.md'
     }
 ];
 

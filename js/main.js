@@ -58,6 +58,7 @@ function loadContent(href) {
     }
 }
 
+
 function createSection(id, title) {
     const mainContent = document.getElementById('main-content');
     const section = document.createElement('section');

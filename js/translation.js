@@ -63,6 +63,7 @@ export function initializeLanguageToggle(onLanguageChange) {
     }
 }
 
+
 export function translatePage(lang) {
     document.querySelectorAll('[data-translate]').forEach(element => {
         const key = element.getAttribute('data-translate');
@@ -102,6 +103,8 @@ export function translatePage(lang) {
 }
 
 export function getLocalizedUrl(url, lang) {
+    // Remove leading slash if present
+    url = url.replace(/^\//, '');
     if (lang === 'es') {
         return url.replace('.md', '_es.md');
     } else {

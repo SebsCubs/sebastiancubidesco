@@ -12,7 +12,7 @@ export async function loadMarkdown(url) {
 
         // Process image paths
         markdown = markdown.replace(/!\[([^\]]*)\]\((\/static\/images\/[^\)]+)\)/g, (match, alt, src) => {
-            const newSrc = src.replace(/^\/static/, '');
+            const newSrc = src.replace(/^\/static\//, '');
             return `![${alt}](${newSrc})`;
         });
 
