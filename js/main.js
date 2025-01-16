@@ -38,6 +38,8 @@ function loadContent(href) {
 
     switch (href) {
         case 'index.html':
+            loadMarkdown(getLocalizedUrl('/content/index.md', currentLang));
+            break;
         case '':
             createSection('projects', translations[currentLang]['projects-title']);
             createSection('blog', translations[currentLang]['blog-title']);
