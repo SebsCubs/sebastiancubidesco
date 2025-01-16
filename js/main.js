@@ -41,10 +41,7 @@ function loadContent(href) {
             loadMarkdown(getLocalizedUrl('/content/index.md', currentLang));
             break;
         case '':
-            createSection('projects', translations[currentLang]['projects-title']);
-            createSection('blog', translations[currentLang]['blog-title']);
-            loadProjects();
-            loadBlogPosts();
+            loadMarkdown(getLocalizedUrl('/content/index.md', currentLang));
             break;
         case 'projects.html':
             createSection('projects', translations[currentLang]['projects-title']);
