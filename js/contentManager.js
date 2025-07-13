@@ -1,3 +1,5 @@
+import { contentConfig } from './content-config.js';
+
 /**
  * Content Management System
  * Handles loading, caching, and rendering of markdown content
@@ -18,12 +20,12 @@ export class ContentManager {
             blog: {
                 basePath: 'content/blogs/',
                 extension: '.md',
-                metadata: this.getBlogMetadata()
+                metadata: contentConfig.blogs
             },
             project: {
                 basePath: 'content/projects/',
                 extension: '.md',
-                metadata: this.getProjectMetadata()
+                metadata: contentConfig.projects
             }
         };
     }
@@ -289,45 +291,5 @@ export class ContentManager {
         });
     }
     
-    getBlogMetadata() {
-        return [
-            {
-                id: 'post1',
-                title: {
-                    en: 'A whitepaper on my website',
-                    es: 'Un whitepaper sobre mi sitio web'
-                },
-                url: 'content/blogs/post1.md'
-            },
-            {
-                id: 'post2',
-                title: {
-                    en: 'My Second Post',
-                    es: 'Mi segunda publicación'
-                },
-                url: 'content/blogs/post2.md'
-            }
-        ];
-    }
-    
-    getProjectMetadata() {
-        return [
-            {
-                id: 'project1',
-                title: {
-                    en: 'Awesome Project',
-                    es: 'Proyecto Impresionante'
-                },
-                url: 'content/projects/project1.md'
-            },
-            {
-                id: 'project2',
-                title: {
-                    en: 'Another Project',
-                    es: 'Otro Proyecto'
-                },
-                url: 'content/projects/project2.md'
-            }
-        ];
-    }
+
 }
