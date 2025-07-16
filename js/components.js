@@ -28,6 +28,11 @@ export class Component {
         
         // Translate initial content
         this.i18nManager.translateContainer(this.element);
+        
+        // For ContentList, render the list after mounting
+        if (this.contentType) {
+            this.renderList();
+        }
     }
     
     /**
@@ -205,7 +210,7 @@ export class LanguageToggle extends Component {
                 <input type="checkbox" id="language-toggle">
                 <span class="slider round"></span>
             </label>
-            <span id="language-label">English</span>
+            <span id="language-label" data-i18n="espanol">Español</span>
         `;
         
         const toggle = container.querySelector('#language-toggle');
@@ -219,6 +224,12 @@ export class LanguageToggle extends Component {
             const newLang = toggle.checked ? 'es' : 'en';
             this.stateManager.setState({ language: newLang });
         });
+        
+        // Set initial label
+        const label = container.querySelector('#language-label');
+        if (label) {
+            label.textContent = currentLang === 'es' ? 'English' : 'Español';
+        }
         
         return container;
     }
@@ -238,6 +249,8 @@ export class LanguageToggle extends Component {
                 
                 if (label) {
                     label.textContent = newState.language === 'es' ? 'English' : 'Español';
+                    // Also translate the label
+                    this.i18nManager.translateContainer(label);
                 }
             }
         );
@@ -270,9 +283,6 @@ export class ContentList extends Component {
         
         section.appendChild(title);
         section.appendChild(listContainer);
-        
-        // Initial render
-        this.renderList();
         
         return section;
     }

@@ -61,6 +61,20 @@ Your bilingual blog has been successfully refactored into a modern, performant w
 ## 🚀 Ready to Test
 
 ### **Quick Start**
+
+#### **Windows (PowerShell)**
+```powershell
+# Verify everything is set up correctly
+.\verify-setup.ps1
+
+# Start development server
+.\start-dev.ps1
+
+# Open in browser
+# http://localhost:8000
+```
+
+#### **Linux/macOS (Bash)**
 ```bash
 # Verify everything is set up correctly
 ./verify-setup.sh

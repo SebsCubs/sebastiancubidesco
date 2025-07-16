@@ -118,6 +118,14 @@ export class StateManager {
         }
     }
     
+    /**
+     * Get all cache keys
+     * @returns {string[]} Array of cache keys
+     */
+    getAllCacheKeys() {
+        return Array.from(this.cache.keys());
+    }
+    
     // Private methods
     
     notifySubscribers(prevState, newState) {

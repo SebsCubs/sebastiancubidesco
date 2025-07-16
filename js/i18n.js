@@ -20,7 +20,8 @@ export class I18nManager {
                 'home': 'Home',
                 'dark-mode': 'Dark Mode',
                 'light-mode': 'Light Mode',
-                'language-toggle': 'Language'
+                'language-toggle': 'Language',
+                'espanol': 'Español'
             },
             es: {
                 'loading': 'Cargando...',
@@ -30,7 +31,8 @@ export class I18nManager {
                 'home': 'Inicio',
                 'dark-mode': 'Modo Oscuro',
                 'light-mode': 'Modo Claro',
-                'language-toggle': 'Idioma'
+                'language-toggle': 'Idioma',
+                'espanol': 'Español'
             }
         };
         

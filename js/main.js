@@ -53,6 +53,9 @@ class App {
             // Setup navigation
             this.setupNavigation();
             
+            // Setup language change handler
+            this.setupLanguageChangeHandler();
+            
             // Load initial content
             await this.loadInitialContent();
             
@@ -71,8 +74,13 @@ class App {
      * Mount components to DOM
      */
     mountComponents() {
-        // Mount header
-        this.components.header.mount(document.body);
+        // Mount header at the top of body
+        const headerElement = this.components.header.render();
+        document.body.insertBefore(headerElement, document.body.firstChild);
+        this.components.header.element = headerElement;
+        this.components.header.mounted = true;
+        this.components.header.setupSubscriptions();
+        this.components.header.i18nManager.translateContainer(headerElement);
         
         // Mount toggles to header
         const themeContainer = document.querySelector('.theme-toggle-container');
@@ -128,6 +136,32 @@ class App {
         
         // Listen for browser back/forward
         window.addEventListener('popstate', this.handlePopState);
+    }
+    
+    /**
+     * Setup language change handler
+     */
+    setupLanguageChangeHandler() {
+        // Subscribe to language changes
+        this.stateManager.subscribe('language', async (newState, prevState) => {
+            if (newState.language !== prevState.language) {
+                // Clear content cache for language change
+                this.contentManager.clearLanguageCache(prevState.language);
+                
+                // Check if we're viewing a specific content item
+                const currentContent = this.stateManager.getState('currentContent');
+                if (currentContent && currentContent.type && currentContent.id) {
+                    // Reload the current content item with new language
+                    await this.contentManager.loadAndRenderContent(currentContent.type, currentContent.id);
+                } else {
+                    // Reload current route (for list pages)
+                    const currentRoute = this.stateManager.getState('route');
+                    if (currentRoute) {
+                        await this.loadContent(currentRoute.path);
+                    }
+                }
+            }
+        });
     }
     
     /**
@@ -201,6 +235,9 @@ class App {
             // Render markdown
             await this.contentManager.renderMarkdown(content.markdown, container);
             
+            // Translate the content
+            this.i18nManager.translateContainer(mainContent);
+            
         } catch (error) {
             console.error('Error loading page content:', error);
             this.stateManager.setState({ error: error.message });
@@ -214,7 +251,7 @@ class App {
         const mainContent = document.getElementById('main-content');
         if (!mainContent) return;
         
-        // Clear main content
+        // Clear main content and create centered container
         mainContent.innerHTML = '<div class="centered-content"></div>';
         const container = mainContent.querySelector('.centered-content');
         
@@ -239,7 +276,7 @@ class App {
         const mainContent = document.getElementById('main-content');
         if (!mainContent) return;
         
-        // Clear main content
+        // Clear main content and create centered container
         mainContent.innerHTML = '<div class="centered-content"></div>';
         const container = mainContent.querySelector('.centered-content');
         

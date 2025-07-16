@@ -75,6 +75,21 @@ export class ContentManager {
     }
     
     /**
+     * Clear cache for specific language
+     * @param {string} language - Language code
+     */
+    clearLanguageCache(language) {
+        const cacheKeys = this.stateManager.getAllCacheKeys();
+        const keysToRemove = cacheKeys.filter(key => key.includes(`:${language}`));
+        
+        keysToRemove.forEach(key => {
+            this.stateManager.clearCache(key);
+        });
+        
+        console.log(`Cleared ${keysToRemove.length} cache entries for language: ${language}`);
+    }
+    
+    /**
      * Render markdown content
      * @param {string} markdown - Markdown content
      * @param {HTMLElement} container - Container element
@@ -182,15 +197,24 @@ export class ContentManager {
             mainContent.innerHTML = '<div class="loading" data-i18n="loading">Loading...</div>';
             this.i18nManager.translateContainer(mainContent);
             
+            // Create centered container
+            mainContent.innerHTML = '<div class="centered-content"></div>';
+            const container = mainContent.querySelector('.centered-content');
+            
             // Render the content
-            await this.renderMarkdown(content.markdown, mainContent);
+            await this.renderMarkdown(content.markdown, container);
+            
+            // Translate the rendered content
+            this.i18nManager.translateContainer(mainContent);
             
         } catch (error) {
             mainContent.innerHTML = `
-                <div class="error">
-                    <h2 data-i18n="error">Error</h2>
-                    <p>${error.message}</p>
-                    <button onclick="location.reload()" data-i18n="retry">Retry</button>
+                <div class="centered-content">
+                    <div class="error">
+                        <h2 data-i18n="error">Error</h2>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" data-i18n="retry">Retry</button>
+                    </div>
                 </div>
             `;
             this.i18nManager.translateContainer(mainContent);
