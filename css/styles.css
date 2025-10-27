@@ -50,6 +50,11 @@ nav ul li a {
     text-decoration: none;
 }
 
+nav ul li a.active {
+    font-weight: bold;
+    border-bottom: 2px solid var(--link-color);
+}
+
 /* Header styles */
 header {
     border-bottom: 1px solid var(--text-color);
