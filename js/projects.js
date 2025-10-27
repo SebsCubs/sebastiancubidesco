@@ -1,45 +1,53 @@
 // projects.js
 
-import { currentLang, getLocalizedUrl } from './translation.js';
-import { loadMarkdown } from './content.js';
+import { currentLang } from './translation.js';
 
 export const projects = [
-    { 
-        id: 'project1', 
+    {
+        id: 'project1',
         title: {
             en: 'Awesome Project',
             es: 'Proyecto Impresionante'
         },
-        url: '/content/projects/project1.md'
+        url: 'content/projects/project1.md'
     },
-    { 
-        id: 'project2', 
+    {
+        id: 'project2',
         title: {
             en: 'Another Project',
             es: 'Otro Proyecto'
         },
-        url: '/content/projects/project2.md'
+        url: 'content/projects/project2.md'
     }
 ];
 
-export function loadProjects() {
+export function loadProjects(onSelect) {
     const projectList = document.getElementById('projects-list');
-    if (projectList) {
-        projectList.innerHTML = ''; // Clear existing list
-        projects.forEach(project => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = '#';
-            a.textContent = project.title[currentLang];
-            a.onclick = (e) => {
-                e.preventDefault();
-                const localizedUrl = getLocalizedUrl(project.url, currentLang);
-                loadMarkdown(localizedUrl);
-            };
-            li.appendChild(a);
-            projectList.appendChild(li);
-        });
-    } else {
+    if (!projectList) {
         console.error('Project list element not found');
+        return;
     }
+
+    projectList.innerHTML = '';
+    projects.forEach(project => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `projects.html?project=${project.id}`;
+        a.textContent = project.title[currentLang];
+        a.addEventListener('click', (event) => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                return;
+            }
+            event.preventDefault();
+            if (typeof onSelect === 'function') {
+                onSelect(project);
+            }
+        });
+        li.appendChild(a);
+        projectList.appendChild(li);
+    });
+}
+
+export function getProjectById(id) {
+    return projects.find(project => project.id === id);
 }

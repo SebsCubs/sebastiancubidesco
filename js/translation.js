@@ -1,125 +1,101 @@
 // translation.js
 
-import { loadMarkdown } from './content.js';
-
 export const translations = {
     en: {
-        'projects': 'Projects',
-        'blog': 'Blog',
-        'projects-title': 'Projects',
-        'blog-title': 'Blog',
-        'home': 'Home',
-        'dark-mode': 'Dark Mode',
-        'light-mode': 'Light Mode',
-        'theme-label': 'Dark Mode',
-        'language-label': 'Español',
-        'about': 'About',
-        'contact': 'Contact'
+        'nav.home': 'Home',
+        'nav.projects': 'Projects',
+        'nav.blog': 'Blog',
+        'headings.projects': 'Projects',
+        'headings.blog': 'Blog',
+        'headings.notFound': 'Content not found',
+        'messages.notFound': 'The content you are looking for could not be found.',
+        'toggle.dark': 'Dark Mode',
+        'toggle.light': 'Light Mode',
+        'toggle.language.label': 'Español',
+        'toggle.language.checkedLabel': 'English',
+        'page-title.base': 'Sebastian Cubides',
+        'page-title.home': 'Sebastian Cubides',
+        'page-title.projects': 'Projects | Sebastian Cubides',
+        'page-title.blog': 'Blog | Sebastian Cubides',
+        'page-title.notFound': 'Not Found | Sebastian Cubides'
     },
     es: {
-        'projects': 'Proyectos',
-        'blog': 'Blog',
-        'projects-title': 'Proyectos',
-        'blog-title': 'Blog',
-        'home': 'Inicio',
-        'dark-mode': 'Modo Oscuro',
-        'light-mode': 'Modo Claro',
-        'theme-label': 'Modo Claro',
-        'language-label': 'English',
-        'about': 'Acerca',
-        'contact': 'Contacto'
+        'nav.home': 'Inicio',
+        'nav.projects': 'Proyectos',
+        'nav.blog': 'Blog',
+        'headings.projects': 'Proyectos',
+        'headings.blog': 'Blog',
+        'headings.notFound': 'Contenido no encontrado',
+        'messages.notFound': 'No pudimos encontrar el contenido que solicitaste.',
+        'toggle.dark': 'Modo oscuro',
+        'toggle.light': 'Modo claro',
+        'toggle.language.label': 'Español',
+        'toggle.language.checkedLabel': 'Inglés',
+        'page-title.base': 'Sebastian Cubides',
+        'page-title.home': 'Sebastian Cubides',
+        'page-title.projects': 'Proyectos | Sebastian Cubides',
+        'page-title.blog': 'Blog | Sebastian Cubides',
+        'page-title.notFound': 'No encontrado | Sebastian Cubides'
     }
 };
 
 export let currentLang = localStorage.getItem('language') || 'en';
 
+export function t(key) {
+    return translations[currentLang][key] || translations.en[key] || key;
+}
+
 export function initializeLanguageToggle(onLanguageChange) {
     const toggle = document.getElementById('language-toggle');
     const label = document.getElementById('language-label');
 
-    // Check for saved language preference in localStorage
-    if (localStorage.getItem('language') === 'es') {
-        currentLang = 'es';
-        toggle.checked = true;
-        label.textContent = 'English';
-    } else {
-        currentLang = 'en';
-        toggle.checked = false;
-        label.textContent = 'Español';
+    if (!toggle || !label) {
+        return;
     }
+
+    toggle.checked = currentLang === 'es';
+    updateLanguageLabel(toggle, label);
+    document.documentElement.setAttribute('lang', currentLang);
 
     toggle.addEventListener('change', () => {
         currentLang = toggle.checked ? 'es' : 'en';
-        label.textContent = toggle.checked ? 'English' : 'Español';
         localStorage.setItem('language', currentLang);
+        document.documentElement.setAttribute('lang', currentLang);
+        updateLanguageLabel(toggle, label);
         if (typeof onLanguageChange === 'function') {
-            onLanguageChange();
+            onLanguageChange(currentLang);
         }
     });
+}
 
-    // Initial translation
-    if (typeof onLanguageChange === 'function') {
-        onLanguageChange();
+export function translatePage() {
+    document.documentElement.setAttribute('lang', currentLang);
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (key) {
+            element.textContent = t(key);
+        }
+    });
+    const toggle = document.getElementById('language-toggle');
+    const label = document.getElementById('language-label');
+    if (toggle && label) {
+        updateLanguageLabel(toggle, label);
     }
 }
 
-
-export function translatePage(lang) {
-    document.querySelectorAll('[data-translate]').forEach(element => {
-        const key = element.getAttribute('data-translate');
-        if (translations[lang][key]) {
-            element.textContent = translations[lang][key];
-        }
-    });
-
-    // Translate header elements
-    document.getElementById('theme-label').textContent = translations[lang]['theme-label'];
-    document.getElementById('language-label').textContent = translations[lang]['language-label'];
-    
-    // Translate navigation links
-    document.querySelectorAll('nav a').forEach(link => {
-        const key = link.getAttribute('href').replace('.html', '');
-        if (translations[lang][key]) {
-            link.textContent = translations[lang][key];
-        }
-    });
-
-    // Translate page-specific content
-    const pageSpecificContent = document.querySelector('main h1[data-key]');
-    if (pageSpecificContent) {
-        const key = pageSpecificContent.getAttribute('data-key');
-        if (translations[lang][key]) {
-            pageSpecificContent.textContent = translations[lang][key];
-        }
-    }
-
-    // Update theme toggle label
-    const body = document.body;
-    const isDark = body.classList.contains('dark-mode');
-    const themeLabel = document.getElementById('theme-label');
-    themeLabel.textContent = isDark 
-        ? translations[lang]['light-mode'] 
-        : translations[lang]['dark-mode'];
+export function getThemeLabel(isDark) {
+    return isDark ? t('toggle.light') : t('toggle.dark');
 }
 
 export function getLocalizedUrl(url, lang) {
-    // Remove leading slash if present
     url = url.replace(/^\//, '');
     if (lang === 'es') {
         return url.replace('.md', '_es.md');
-    } else {
-        return url.replace('_es.md', '.md');
     }
+    return url.replace('_es.md', '.md');
 }
 
-function reloadCurrentContent() {
-    const mainContent = document.getElementById('main-content');
-    const currentContent = mainContent.querySelector('.centered-content');
-    
-    if (currentContent) {
-        const currentUrl = currentContent.getAttribute('data-current-url');
-        if (currentUrl) {
-            loadMarkdown(getLocalizedUrl(currentUrl, currentLang));
-        }
-    }
+function updateLanguageLabel(toggle, label) {
+    const key = toggle.checked ? 'toggle.language.checkedLabel' : 'toggle.language.label';
+    label.textContent = t(key);
 }
