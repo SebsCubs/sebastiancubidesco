@@ -51,7 +51,7 @@ function navigateTo(path, params = {}) {
     renderFromUrl();
 }
 
-function renderFromUrl() {
+async function renderFromUrl() {
     const { path, params } = parseLocation();
     switch (path) {
         case '':
@@ -60,14 +60,14 @@ function renderFromUrl() {
             break;
         case 'projects.html':
             if (params.project) {
-                renderProjectDetail(params.project);
+                await renderProjectDetail(params.project);
             } else {
                 renderProjectList();
             }
             break;
         case 'blogs.html':
             if (params.post) {
-                renderBlogDetail(params.post);
+                await renderBlogDetail(params.post);
             } else {
                 renderBlogList();
             }
@@ -117,8 +117,8 @@ function renderProjectList() {
     });
 }
 
-function renderProjectDetail(projectId) {
-    const project = getProjectById(projectId);
+async function renderProjectDetail(projectId) {
+    const project = await getProjectById(projectId);
     if (!project) {
         renderNotFound();
         return;
@@ -162,8 +162,8 @@ function renderBlogList() {
     });
 }
 
-function renderBlogDetail(postId) {
-    const post = getBlogPostById(postId);
+async function renderBlogDetail(postId) {
+    const post = await getBlogPostById(postId);
     if (!post) {
         renderNotFound();
         return;
